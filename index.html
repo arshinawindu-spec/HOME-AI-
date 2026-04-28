@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Homeo AI — Your AI Homeopathy Companion</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    includedLanguages: 'hi,bn,ta,te,mr,gu,kn,ml,pa,ur,en',
+    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+    autoDisplay: false
+  }, 'google_translate_element');
+}
+</script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<style>
+:root {
+  --blue: #1B4F8A;
+  --blue-dark: #0D2B4E;
+  --blue-light: #E6F0FA;
+  --teal: #1A8C6A;
+  --teal-light: #E0F5EC;
+  --amber: #D97706;
+  --amber-light: #FEF3C7;
+  --red: #DC2626;
+  --bg: #F0F4F8;
+  --white: #ffffff;
+  --text: #0D2B4E;
+  --muted: #4A6785;
+  --border: #C4D4E8;
+  --card: #ffffff;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-pill: 100px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;min-height:100vh}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* LAYOUT */
+.page{display:none}
+.page.active{display:block;animation:fadeIn 0.3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* NAVBAR */
+nav{background:var(--blue-dark);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.08)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer}
+.logo-mark{width:34px;height:34px;background:var(--teal);border-radius:10px;display:flex;align-items:center;justify-content:center}
+.logo-mark svg{width:18px;height:18px;fill:white}
+.logo-text{font-family:'DM Serif Display',serif;font-size:20px;color:white;letter-spacing:-0.3px}
+.logo-text span{color:#6FD5B0;font-style:italic}
+.nav-tabs{display:flex;gap:2px}
+.nav-tab{padding:6px 16px;color:rgba(255,255,255,0.6);font-size:13px;font-weight:500;cursor:pointer;border-radius:var(--radius-sm);border:none;background:none;display:flex;align-items:center;gap:6px;transition:all 0.2s}
+.nav-tab:hover{color:white;background:rgba(255,255,255,0.08)}
+.nav-tab.active{color:white;background:rgba(255,255,255,0.12)}
+.nav-tab svg{width:14px;height:14px;fill:currentColor}
+.nav-right{display:flex;align-items:center;gap:10px}
+.plan-pill{background:var(--teal);color:white;font-size:11px;font-weight:600;padding:4px 12px;border-radius:var(--radius-pill);letter-spacing:0.3px}
+.bell-btn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.1);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.bell-btn svg{width:15px;height:15px;fill:white}
+
+/* CONTAINER */
+.container{max-width:1200px;margin:0 auto;padding:40px 24px}
+
+/* DISCLAIMER */
+.disclaimer{border-left:4px solid var(--amber);background:var(--amber-light);padding:14px 18px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-size:12px;color:#78350F;line-height:1.6}
+.disclaimer strong{display:flex;align-items:center;gap:6px;font-size:12px;color:#92400E;margin-bottom:4px}
+.disclaimer.blue-border{border-left-color:var(--blue);background:var(--blue-light);color:var(--blue-dark)}
+.disclaimer.blue-border strong{color:var(--blue)}
+.disclaimer.collapsible{cursor:pointer}
+.disclaimer-body{margin-top:6px}
+.disclaimer.collapsed .disclaimer-body{display:none}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;border-radius:var(--radius-sm);border:none;font-size:14px;font-weight:500;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif}
+.btn-primary{background:var(--teal);color:white}
+.btn-primary:hover{background:#157a5c;transform:translateY(-1px)}
+.btn-blue{background:var(--blue);color:white}
+.btn-blue:hover{background:#163f6e;transform:translateY(-1px)}
+.btn-outline{background:white;color:var(--blue);border:1.5px solid var(--blue)}
+.btn-outline:hover{background:var(--blue-light)}
+.btn-full{width:100%;justify-content:center}
+.btn svg{width:16px;height:16px;fill:currentColor}
+.btn-sm{padding:7px 14px;font-size:12px}
+
+/* CARDS */
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:20px}
+.card-sm{padding:14px}
+
+/* ===== HOME PAGE ===== */
+.hero{background:var(--blue-dark);border-radius:16px;padding:52px 48px;color:white;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;margin-bottom:28px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;right:-60px;top:-60px;width:300px;height:300px;background:rgba(26,140,106,0.15);border-radius:50%}
+.hero::after{content:'';position:absolute;right:60px;bottom:-80px;width:200px;height:200px;background:rgba(27,79,138,0.4);border-radius:50%}
+.hero-content{position:relative;z-index:1}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(111,213,176,0.2);border:1px solid rgba(111,213,176,0.3);color:#6FD5B0;font-size:11px;font-weight:600;padding:4px 12px;border-radius:var(--radius-pill);margin-bottom:16px;letter-spacing:0.5px}
+.hero h1{font-family:'DM Serif Display',serif;font-size:38px;line-height:1.2;margin-bottom:12px;letter-spacing:-0.5px}
+.hero h1 em{color:#6FD5B0;font-style:italic}
+.hero p{color:rgba(255,255,255,0.75);font-size:15px;margin-bottom:24px;max-width:480px}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+.hero-visual{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;min-width:220px}
+.stat-card{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-sm);padding:14px 18px;backdrop-filter:blur(10px)}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:#6FD5B0}
+.stat-label{font-size:11px;color:rgba(255,255,255,0.6);margin-top:2px}
+
+.section-title{font-family:'DM Serif Display',serif;font-size:24px;color:var(--text);margin-bottom:6px}
+.section-sub{color:var(--muted);font-size:14px;margin-bottom:24px}
+
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+.feat-card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px;transition:all 0.2s;cursor:default}
+.feat-card:hover{border-color:var(--blue);transform:translateY(-2px)}
+.feat-icon{width:40px;height:40px;background:var(--blue-light);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.feat-icon svg{width:20px;height:20px;fill:var(--blue)}
+.feat-card h3{font-size:14px;font-weight:600;margin-bottom:6px;color:var(--text)}
+.feat-card p{font-size:12px;color:var(--muted);line-height:1.6}
+
+/* ===== DIAGNOSE PAGE ===== */
+.diag-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+.diag-header h1{font-family:'DM Serif Display',serif;font-size:28px}
+.step-indicator{display:flex;align-items:center;gap:8px}
+.step{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;border:2px solid var(--border);color:var(--muted);background:white;transition:all 0.3s}
+.step.active{background:var(--blue);color:white;border-color:var(--blue)}
+.step.done{background:var(--teal);color:white;border-color:var(--teal)}
+.step-line{width:24px;height:2px;background:var(--border)}
+
+.form-layout{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.form-layout.full-col{grid-template-columns:1fr}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px;letter-spacing:0.3px;text-transform:uppercase}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:'DM Sans',sans-serif;color:var(--text);background:white;outline:none;transition:border-color 0.2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--blue)}
+.form-group textarea{resize:vertical;min-height:80px}
+.unit-toggle{display:flex;border:1.5px solid var(--border);border-radius:var(--radius-sm);overflow:hidden}
+.unit-toggle span{flex:1;padding:9px 12px;text-align:center;font-size:13px;cursor:pointer;transition:all 0.2s;color:var(--muted)}
+.unit-toggle span.active{background:var(--blue);color:white}
+.pill-select{display:flex;gap:6px;flex-wrap:wrap}
+.ps-pill{padding:7px 16px;border:1.5px solid var(--border);border-radius:var(--radius-pill);font-size:13px;cursor:pointer;background:white;color:var(--muted);transition:all 0.2s}
+.ps-pill.active{background:var(--blue);color:white;border-color:var(--blue)}
+.form-section{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.form-section-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--bg);display:flex;align-items:center;gap:8px}
+.form-section-title svg{width:16px;height:16px;fill:var(--blue)}
+
+/* CHAT */
+.chat-container{background:white;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;display:flex;flex-direction:column;min-height:500px}
+.chat-header{background:var(--blue-dark);padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.chat-header-info{display:flex;align-items:center;gap:10px}
+.chat-ai-avatar{width:32px;height:32px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.chat-ai-avatar svg{width:16px;height:16px;fill:white}
+.chat-header h3{font-size:14px;color:white;font-weight:500}
+.chat-header p{font-size:11px;color:rgba(255,255,255,0.6)}
+.msg-limit-badge{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8);font-size:11px;padding:4px 10px;border-radius:var(--radius-pill)}
+.chat-msgs{flex:1;padding:20px;display:flex;flex-direction:column;gap:16px;overflow-y:auto;background:#F8FAFC}
+.msg-row{display:flex;gap:10px;align-items:flex-start}
+.msg-row.user{flex-direction:row-reverse}
+.msg-avatar{width:30px;height:30px;border-radius:50%;background:var(--teal);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:white}
+.msg-avatar.user-av{background:var(--blue)}
+.msg-bubble{max-width:72%;padding:12px 16px;border-radius:12px;font-size:13px;line-height:1.6}
+.msg-bubble.ai{background:white;border:1px solid var(--border);color:var(--text);border-radius:4px 12px 12px 12px}
+.msg-bubble.user{background:var(--blue);color:white;border-radius:12px 4px 12px 12px}
+.remedy-cards{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.remedy-card{background:white;border:1.5px solid var(--teal);border-radius:10px;padding:12px 14px}
+.remedy-card-name{font-size:13px;font-weight:600;color:var(--blue-dark);display:flex;align-items:center;gap:6px}
+.remedy-card-name::before{content:'';width:6px;height:6px;background:var(--teal);border-radius:50%;flex-shrink:0}
+.remedy-card-detail{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.6}
+.remedy-tag{display:inline-block;background:var(--teal-light);color:var(--teal);font-size:10px;font-weight:600;padding:2px 8px;border-radius:var(--radius-pill);margin-right:4px}
+.chat-input-area{padding:14px 16px;border-top:1px solid var(--border);background:white;display:flex;gap:10px}
+.chat-input-area input{flex:1;padding:10px 16px;border:1.5px solid var(--border);border-radius:var(--radius-pill);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;color:var(--text)}
+.chat-input-area input:focus{border-color:var(--blue)}
+.send-btn{width:38px;height:38px;background:var(--teal);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.send-btn svg{width:16px;height:16px;fill:white}
+
+/* ===== MEDICINES PAGE ===== */
+.med-search-bar{width:100%;padding:12px 18px 12px 44px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;color:var(--text);background:white;margin-bottom:14px;transition:border-color 0.2s}
+.med-search-bar:focus{border-color:var(--blue)}
+.search-wrap{position:relative;margin-bottom:14px}
+.search-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;fill:var(--muted)}
+.chip-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.chip{padding:6px 14px;border:1.5px solid var(--border);border-radius:var(--radius-pill);font-size:12px;font-weight:500;cursor:pointer;background:white;color:var(--muted);transition:all 0.2s}
+.chip.active,.chip:hover{background:var(--blue);color:white;border-color:var(--blue)}
+.med-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.med-card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:18px;transition:all 0.2s;cursor:pointer}
+.med-card:hover{border-color:var(--blue);transform:translateY(-2px)}
+.med-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.med-latin{font-size:11px;color:var(--muted);font-style:italic;margin-bottom:8px}
+.med-desc{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:10px}
+.tag-row{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
+.tag{font-size:10px;font-weight:600;padding:3px 9px;border-radius:var(--radius-pill)}
+.tag.acute{background:#FEE2E2;color:#991B1B}
+.tag.chronic{background:#EDE9FE;color:#5B21B6}
+.tag.constitutional{background:#D1FAE5;color:#065F46}
+.tag.fever{background:#FEF3C7;color:#92400E}
+.tag.digestion{background:#E0F2FE;color:#075985}
+.view-detail-btn{font-size:12px;color:var(--blue);background:var(--blue-light);border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;width:100%;transition:all 0.2s}
+.view-detail-btn:hover{background:var(--blue);color:white}
+
+/* REMEDY DETAIL MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(13,43,78,0.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.2s ease}
+.modal-box{background:white;border-radius:16px;width:100%;max-width:680px;max-height:85vh;overflow-y:auto;padding:32px}
+.modal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
+.modal-title{font-family:'DM Serif Display',serif;font-size:26px;color:var(--text)}
+.modal-subtitle{font-size:13px;color:var(--muted);font-style:italic}
+.close-btn{width:32px;height:32px;border-radius:50%;background:var(--bg);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--muted);flex-shrink:0}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.detail-section{background:var(--bg);border-radius:var(--radius-sm);padding:14px}
+.detail-section.full{grid-column:1/-1}
+.detail-section h4{font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.detail-section ul{list-style:none;display:flex;flex-direction:column;gap:4px}
+.detail-section ul li{font-size:12px;color:var(--muted);display:flex;gap:6px;align-items:flex-start;line-height:1.5}
+.detail-section ul li::before{content:'•';color:var(--teal);flex-shrink:0;font-weight:700}
+.detail-section p{font-size:12px;color:var(--muted);line-height:1.6}
+.potency-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.potency-chip{background:var(--blue-light);color:var(--blue);font-size:11px;font-weight:600;padding:3px 10px;border-radius:var(--radius-pill)}
+.source-line{font-size:11px;color:var(--muted);margin-top:16px;padding-top:14px;border-top:1px solid var(--border)}
+
+/* ===== DOCTOR PAGE ===== */
+.doc-layout{display:grid;grid-template-columns:280px 1fr;gap:20px}
+.doc-sidebar{display:flex;flex-direction:column;gap:12px}
+.doctor-profile-card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;cursor:pointer;transition:all 0.2s}
+.doctor-profile-card:hover,.doctor-profile-card.active-doc{border-color:var(--blue)}
+.doctor-profile-card.active-doc{border-width:2px}
+.doc-avatar{width:56px;height:56px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;color:white;font-family:'DM Serif Display',serif;font-size:20px;margin:0 auto 10px;border:3px solid var(--blue-light)}
+.verified-badge{display:inline-flex;align-items:center;gap:4px;background:var(--teal-light);color:var(--teal);font-size:10px;font-weight:700;padding:3px 10px;border-radius:var(--radius-pill);margin-bottom:8px;letter-spacing:0.3px}
+.verified-badge svg{width:10px;height:10px;fill:var(--teal)}
+.doc-name{font-size:13px;font-weight:600;color:var(--text)}
+.doc-spec{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.5}
+.doc-reg{font-size:10px;color:var(--border);margin-top:6px;padding-top:8px;border-top:1px solid var(--bg)}
+.doc-main{display:flex;flex-direction:column;gap:16px}
+.ask-box{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.ask-box h3{font-size:15px;font-weight:600;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.ask-box h3 svg{width:16px;height:16px;fill:var(--blue)}
+.ask-box textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;resize:none;height:80px;transition:border-color 0.2s}
+.ask-box textarea:focus{border-color:var(--blue)}
+.ask-box-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+.ask-note{font-size:11px;color:var(--muted)}
+.query-card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.query-patient{font-size:11px;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.query-patient span{background:var(--bg);padding:2px 8px;border-radius:var(--radius-pill)}
+.query-q{font-size:13px;color:var(--text);margin-bottom:10px;line-height:1.5}
+.query-ans{background:var(--teal-light);border-left:3px solid var(--teal);border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:10px 14px}
+.query-ans-doctor{font-size:11px;font-weight:600;color:var(--teal);margin-bottom:4px}
+.query-ans p{font-size:12px;color:#065F46;line-height:1.6}
+
+/* ===== PLANS PAGE ===== */
+.current-plan-card{background:var(--blue-dark);border-radius:var(--radius);padding:24px;color:white;margin-bottom:24px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
+.cp-label{font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px}
+.cp-plan{font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:4px}
+.cp-tagline{font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:14px}
+.progress-wrap{display:flex;align-items:center;gap:10px}
+.progress-bar{flex:1;background:rgba(255,255,255,0.15);border-radius:4px;height:6px;overflow:hidden}
+.progress-fill{background:#6FD5B0;height:100%;border-radius:4px}
+.progress-label{font-size:11px;color:rgba(255,255,255,0.6);white-space:nowrap}
+.upgrade-nudge{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius-sm);padding:16px 20px;text-align:center}
+.nudge-text{font-size:13px;color:rgba(255,255,255,0.8);margin-bottom:10px}
+
+.plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+.plan-card{background:white;border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:relative;display:flex;flex-direction:column}
+.plan-card.featured{border:2.5px solid var(--blue)}
+.popular-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--blue);color:white;font-size:10px;font-weight:700;padding:4px 14px;border-radius:var(--radius-pill);white-space:nowrap;letter-spacing:0.5px}
+.plan-tier{font-size:11px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.plan-price-big{font-family:'DM Serif Display',serif;font-size:36px;color:var(--blue-dark);line-height:1;margin-bottom:2px}
+.plan-price-big sup{font-size:16px;font-family:'DM Sans',sans-serif;font-weight:500;vertical-align:super}
+.plan-period{font-size:12px;color:var(--muted);margin-bottom:16px}
+.plan-divider{height:1px;background:var(--bg);margin-bottom:16px}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:8px;flex:1;margin-bottom:20px}
+.plan-features li{font-size:12px;color:var(--muted);display:flex;gap:8px;align-items:flex-start;line-height:1.5}
+.feat-check{width:14px;height:14px;border-radius:50%;background:var(--teal-light);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.feat-check svg{width:8px;height:8px;fill:var(--teal)}
+.feat-lock{width:14px;height:14px;border-radius:50%;background:var(--bg);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.feat-lock svg{width:8px;height:8px;fill:var(--border)}
+.plan-cta{margin-top:auto}
+.restore-section{text-align:center;padding:16px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.restore-btn{background:none;border:1.5px solid var(--border);color:var(--muted);font-size:13px;font-family:'DM Sans',sans-serif;padding:9px 24px;border-radius:var(--radius-sm);cursor:pointer;transition:all 0.2s}
+.restore-btn:hover{border-color:var(--blue);color:var(--blue)}
+.policy-links{font-size:12px;color:var(--muted)}
+.policy-links a{color:var(--blue);text-decoration:none}
+.policy-links a:hover{text-decoration:underline}
+
+/* PAYWALL OVERLAY */
+.paywall-overlay{position:fixed;inset:0;background:rgba(13,43,78,0.7);z-index:300;display:flex;align-items:center;justify-content:center;padding:20px}
+.paywall-box{background:white;border-radius:16px;padding:36px;max-width:420px;width:100%;text-align:center}
+.paywall-icon{width:60px;height:60px;background:var(--amber-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.paywall-icon svg{width:28px;height:28px;fill:var(--amber)}
+.paywall-box h2{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:8px;color:var(--text)}
+.paywall-box p{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6}
+.paywall-plans{display:flex;gap:10px;margin-bottom:16px}
+.pw-plan{flex:1;border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:14px;cursor:pointer;transition:all 0.2s;text-align:center}
+.pw-plan:hover,.pw-plan.selected{border-color:var(--blue);background:var(--blue-light)}
+.pw-plan-name{font-size:12px;font-weight:600;color:var(--text);margin-bottom:3px}
+.pw-plan-price{font-size:18px;font-weight:600;color:var(--blue)}
+.pw-plan-price span{font-size:11px;font-weight:400;color:var(--muted)}
+
+/* TRANSLATE WIDGET */
+.translate-wrap{display:flex;align-items:center}
+#google_translate_element{filter:invert(1) hue-rotate(180deg) brightness(1.2)}
+#google_translate_element select{background:transparent;border:1px solid rgba(255,255,255,0.3);color:white;font-size:12px;padding:4px 8px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.goog-te-gadget{font-size:0!important;color:transparent!important}
+.goog-te-gadget .goog-te-combo{font-size:12px;margin:0}
+
+/* PAYMENT MODAL */
+.pay-overlay{position:fixed;inset:0;background:rgba(13,43,78,0.7);z-index:400;display:flex;align-items:center;justify-content:center;padding:20px}
+.pay-box{background:white;border-radius:16px;width:100%;max-width:520px;overflow:hidden}
+.pay-header{background:var(--blue-dark);padding:20px 28px;display:flex;align-items:center;justify-content:space-between}
+.pay-header h2{font-family:'DM Serif Display',serif;font-size:20px;color:white}
+.pay-header p{font-size:12px;color:rgba(255,255,255,0.6);margin-top:2px}
+.pay-close{background:rgba(255,255,255,0.1);border:none;color:white;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.pay-plan-summary{display:flex;gap:12px;padding:16px 28px;background:var(--blue-light);border-bottom:1px solid var(--border)}
+.pay-plan-info{flex:1}
+.pay-plan-name{font-size:13px;font-weight:600;color:var(--blue-dark)}
+.pay-plan-desc{font-size:11px;color:var(--muted);margin-top:2px}
+.pay-plan-price{font-size:22px;font-weight:600;color:var(--blue);font-family:'DM Serif Display',serif}
+.pay-body{padding:24px 28px}
+.pay-methods{display:flex;gap:8px;margin-bottom:20px}
+.pay-method{flex:1;padding:10px 8px;border:2px solid var(--border);border-radius:10px;cursor:pointer;text-align:center;transition:all 0.2s;display:flex;flex-direction:column;align-items:center;gap:4px}
+.pay-method:hover,.pay-method.active{border-color:var(--blue);background:var(--blue-light)}
+.pay-method-icon{width:32px;height:20px;display:flex;align-items:center;justify-content:center}
+.pay-method-icon svg{width:28px;height:18px}
+.pay-method-label{font-size:10px;font-weight:600;color:var(--muted)}
+.pay-method.active .pay-method-label{color:var(--blue)}
+.pay-section{margin-bottom:16px}
+.pay-section-title{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px}
+.pay-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pay-field{margin-bottom:10px}
+.pay-field label{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-bottom:5px}
+.pay-field input,.pay-field select{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;transition:border-color 0.2s}
+.pay-field input:focus{border-color:var(--blue)}
+.card-number-wrap{position:relative}
+.card-number-wrap input{padding-right:80px}
+.card-type-logos{position:absolute;right:10px;top:50%;transform:translateY(-50%);display:flex;gap:4px;align-items:center}
+.card-logo{width:30px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700}
+.card-logo.visa{background:#1A1F71;color:white}
+.card-logo.mc{background:#EB001B;color:white}
+.upi-row{display:flex;gap:8px;align-items:flex-end}
+.upi-row input{flex:1}
+.upi-verify-btn{padding:9px 14px;background:var(--blue-light);color:var(--blue);border:1.5px solid var(--blue);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
+.netbank-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
+.bank-btn{padding:8px 4px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;text-align:center;font-size:11px;font-weight:600;color:var(--muted);transition:all 0.2s;background:white}
+.bank-btn:hover,.bank-btn.active{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+.bank-btn span{display:block;font-size:9px;font-weight:400;margin-top:2px}
+.wallet-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.wallet-btn{padding:8px 4px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;text-align:center;font-size:10px;font-weight:600;color:var(--muted);transition:all 0.2s;background:white}
+.wallet-btn:hover,.wallet-btn.active{border-color:var(--blue);color:var(--blue);background:var(--blue-light)}
+.pay-secure-row{display:flex;align-items:center;gap:6px;margin-bottom:14px;padding:8px 12px;background:#F0FDF4;border-radius:8px;border:1px solid #BBF7D0}
+.pay-secure-row svg{width:14px;height:14px;fill:#16A34A;flex-shrink:0}
+.pay-secure-row span{font-size:11px;color:#15803D}
+.pay-submit{width:100%;padding:13px;background:var(--blue);color:white;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:'DM Serif Display',serif;letter-spacing:0.3px;transition:all 0.2s}
+.pay-submit:hover{background:#163f6e;transform:translateY(-1px)}
+.pay-footer{padding:12px 28px 20px;text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center}
+.pay-logos{display:flex;gap:10px;align-items:center;justify-content:center}
+.pay-logos-label{font-size:10px;color:var(--muted)}
+.pay-logo-badge{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:3px 8px;font-size:10px;font-weight:700;color:var(--muted)}
+.pay-success{text-align:center;padding:36px 28px}
+.pay-success-icon{width:64px;height:64px;background:#D1FAE5;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.pay-success-icon svg{width:32px;height:32px;fill:#16A34A}
+.pay-success h2{font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);margin-bottom:8px}
+.pay-success p{font-size:13px;color:var(--muted);line-height:1.6}
+.pay-tab-hidden{display:none}
+@media(max-width:900px){
+  .features-grid,.med-grid,.plans-grid{grid-template-columns:repeat(2,1fr)}
+  .hero{grid-template-columns:1fr}
+  .hero-visual{display:none}
+  .doc-layout{grid-template-columns:1fr}
+  .detail-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .features-grid,.med-grid,.plans-grid{grid-template-columns:1fr}
+  .form-layout{grid-template-columns:1fr}
+  .nav-tabs{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="showPage('home')">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24"><path d="M12 2C9.24 2 7 4.24 7 7c0 3.75 5 9 5 9s5-5.25 5-9c0-2.76-2.24-5-5-5zm0 6.5c-.83 0-1.5-.67-1.5-1.5S11.17 5.5 12 5.5s1.5.67 1.5 1.5S12.83 8.5 12 8.5zm0 7c-2.33 0-6.17 1.17-7 3.5V20h14v-1c-.83-2.33-4.67-3.5-7-3.5z"/></svg>
+      </div>
+      <span class="logo-text">Homeo <em>AI</em></span>
+    </div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showPage('home',this)">
+        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>Home
+      </button>
+      <button class="nav-tab" onclick="showPage('diagnose',this)">
+        <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>Diagnose
+      </button>
+      <button class="nav-tab" onclick="showPage('medicines',this)">
+        <svg viewBox="0 0 24 24"><path d="M6.5 10h-2v5h2v-5zm4 0h-2v5h2v-5zm8.5 7H5v2h14v-2zm0-13H5v2h14V4zm-4 6h-2v5h2v-5zM12 1L2 6v2h20V6L12 1z"/></svg>Medicines
+      </button>
+      <button class="nav-tab" onclick="showPage('doctor',this)">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>Doctor
+      </button>
+      <button class="nav-tab" onclick="showPage('plans',this)">
+        <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>Plans
+      </button>
+    </div>
+    <div class="nav-right">
+      <div class="translate-wrap" title="Translate page">
+        <div id="google_translate_element"></div>
+      </div>
+      <span class="plan-pill">Free Plan</span>
+      <button class="bell-btn">
+        <svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6V11c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5S10.5 3.17 10.5 4v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HOME PAGE ===== -->
+<div id="home" class="page active">
+  <div class="container">
+    <div class="hero">
+      <div class="hero-content">
+        <div class="hero-tag">
+          <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          AI-Powered Homeopathy
+        </div>
+        <h1>Your intelligent<br>guide to <em>natural healing</em></h1>
+        <p>Get personalised homeopathic remedy recommendations based on classical Materia Medica — Boericke, Kent, Clarke & Allen.</p>
+        <div class="hero-btns">
+          <button class="btn btn-primary" onclick="showPage('diagnose',document.querySelectorAll('.nav-tab')[1])">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+            Start Free Diagnosis
+          </button>
+          <button class="btn btn-outline" onclick="showPage('medicines',document.querySelectorAll('.nav-tab')[2])">Browse Medicines</button>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="stat-card">
+          <div class="stat-num">200+</div>
+          <div class="stat-label">Materia Medica remedies</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">4</div>
+          <div class="stat-label">Classical authors — Boericke, Kent, Clarke, Allen</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">Free</div>
+          <div class="stat-label">5 messages to start — no signup needed</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="disclaimer" style="margin-bottom:28px">
+      <strong>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        Medical Disclaimer
+      </strong>
+      Homeo AI is an educational tool based on classical Materia Medica. This is NOT a substitute for professional medical advice, diagnosis, or treatment. Always consult a qualified and licensed homeopathic physician before starting any remedy. In a medical emergency, contact your local emergency services immediately.
+    </div>
+
+    <div class="section-title">Why Homeo AI?</div>
+    <div class="section-sub">Everything you need for homeopathic guidance in one place</div>
+    <div class="features-grid">
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0116 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 019.5 16 6.5 6.5 0 013 9.5 6.5 6.5 0 019.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg></div>
+        <h3>AI Symptom Analysis</h3>
+        <p>Input your age, height, weight, symptoms and modalities. Get a personalised constitutional and symptomatic analysis instantly.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>
+        <h3>Classical Materia Medica</h3>
+        <p>200+ remedies sourced from Boericke, Kent, Clarke and Allen with full mental, physical symptoms, modalities and potency guidance.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+        <h3>Verified Doctors</h3>
+        <p>Ask registered BHMS & MD homeopathic practitioners your questions directly. Available on Basic and Pro plans.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg></div>
+        <h3>Save Conversations</h3>
+        <p>Revisit your diagnosis chats anytime. Track your remedy history and follow-up with the AI across sessions. (Basic & Pro)</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg></div>
+        <h3>PDF & Image Upload</h3>
+        <p>Upload your medical reports or prescriptions and let Homeo AI extract key symptoms to refine your analysis. (Basic & Pro)</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg></div>
+        <h3>Flexible Plans</h3>
+        <p>Start free with 5 messages. Upgrade to Basic (₹250/mo) or Pro (₹450/mo) for unlimited access and premium features.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DIAGNOSE PAGE ===== -->
+<div id="diagnose" class="page">
+  <div class="container">
+    <div class="diag-header">
+      <div>
+        <h1>Start Diagnosis</h1>
+        <p style="color:var(--muted);font-size:14px;margin-top:4px">Fill in your details for a personalised homeopathic analysis</p>
+      </div>
+      <div class="step-indicator">
+        <div class="step active" id="step1">1</div>
+        <div class="step-line"></div>
+        <div class="step" id="step2">2</div>
+      </div>
+    </div>
+
+    <div class="disclaimer collapsible" id="diagDisclaimer" onclick="toggleDisclaimer()" style="margin-bottom:20px">
+      <strong>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        AI Disclaimer — tap to expand
+      </strong>
+      <div class="disclaimer-body">
+        Homeo AI is an educational tool. Responses are based on classical Materia Medica texts and are NOT a substitute for professional medical advice. Always consult a licensed homeopathic physician before taking any remedy.
+      </div>
+    </div>
+
+    <div id="patientForm">
+      <div class="form-section">
+        <div class="form-section-title">
+          <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+          Basic Information
+        </div>
+        <div class="form-layout">
+          <div class="form-group"><label>Full Name</label><input type="text" placeholder="Your name" id="pName"/></div>
+          <div class="form-group"><label>Age</label><input type="number" placeholder="Years" id="pAge"/></div>
+          <div class="form-group">
+            <label>Gender</label>
+            <div class="pill-select">
+              <div class="ps-pill active" onclick="selPS(this,'gender')">Male</div>
+              <div class="ps-pill" onclick="selPS(this,'gender')">Female</div>
+              <div class="ps-pill" onclick="selPS(this,'gender')">Other</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Height</label>
+            <div class="unit-toggle" style="margin-bottom:6px">
+              <span class="active" onclick="selUnit(this)">cm</span>
+              <span onclick="selUnit(this)">ft/in</span>
+            </div>
+            <input type="number" placeholder="e.g. 170" id="pHeight"/>
+          </div>
+          <div class="form-group">
+            <label>Weight</label>
+            <div class="unit-toggle" style="margin-bottom:6px">
+              <span class="active" onclick="selUnit(this)">kg</span>
+              <span onclick="selUnit(this)">lbs</span>
+            </div>
+            <input type="number" placeholder="e.g. 65" id="pWeight"/>
+          </div>
+          <div class="form-group">
+            <label>Duration of Symptoms</label>
+            <select id="pDuration">
+              <option>Today</option><option>2–3 days</option><option>1 week</option><option>2+ weeks</option><option>Chronic / long-term</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.97.76 1.58V19z"/></svg>
+          Symptoms & Complaints
+        </div>
+        <div class="form-layout full-col">
+          <div class="form-group">
+            <label>Current Complaints / Symptoms</label>
+            <textarea placeholder="Describe your main symptoms in detail... e.g. fever with headache, burning sensation, fatigue" id="pSymptoms"></textarea>
+          </div>
+        </div>
+        <div class="form-layout">
+          <div class="form-group">
+            <label>What makes it better? (Modalities)</label>
+            <textarea placeholder="e.g. rest, warmth, lying down, open air..." style="min-height:65px" id="pBetter"></textarea>
+          </div>
+          <div class="form-group">
+            <label>What makes it worse?</label>
+            <textarea placeholder="e.g. cold, motion, night, heat, noise..." style="min-height:65px" id="pWorse"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Mental / Emotional State (optional)</label>
+            <textarea placeholder="e.g. anxious, irritable, sad, fearful..." style="min-height:65px"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Past Medical History (optional)</label>
+            <textarea placeholder="e.g. diabetes, previous surgeries, allergies..." style="min-height:65px"></textarea>
+          </div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;font-size:15px;padding:13px" onclick="startChat()">
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          Analyse with Homeo AI
+        </button>
+      </div>
+    </div>
+
+    <div id="chatSection" style="display:none">
+      <div class="chat-container">
+        <div class="chat-header">
+          <div class="chat-header-info">
+            <div class="chat-ai-avatar">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-4H7l5-8.5v4h3l-5 8.5z"/></svg>
+            </div>
+            <div>
+              <h3>Homeo AI</h3>
+              <p>Constitutional & Symptomatic Analysis</p>
+            </div>
+          </div>
+          <span class="msg-limit-badge" id="msgLimitBadge">4 messages remaining (Free)</span>
+        </div>
+        <div class="chat-msgs" id="chatMsgs">
+          <div class="msg-row">
+            <div class="chat-ai-avatar msg-avatar">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-4H7l5-8.5v4h3l-5 8.5z"/></svg>
+            </div>
+            <div>
+              <div class="msg-bubble ai">
+                Based on the symptoms you've described — restlessness, burning pains, anxiety and thirst for small sips of water — here is my analysis and recommended remedies:
+                <div class="remedy-cards">
+                  <div class="remedy-card">
+                    <div class="remedy-card-name">Arsenicum Album <span class="remedy-tag">30C</span></div>
+                    <div class="remedy-card-detail">
+                      <strong>Potency:</strong> 30C &nbsp;|&nbsp; <strong>Dosage:</strong> 3 pills, 3× daily for 5 days<br>
+                      <strong>Key indications:</strong> Restlessness, burning pains better by heat, anxiety about health, chilliness, weakness, thirst for small sips, GI disturbances with exhaustion
+                    </div>
+                  </div>
+                  <div class="remedy-card">
+                    <div class="remedy-card-name">Aconitum Napellus <span class="remedy-tag">30C</span></div>
+                    <div class="remedy-card-detail">
+                      <strong>Potency:</strong> 30C &nbsp;|&nbsp; <strong>Dosage:</strong> 3 pills every 2 hours, reduce as symptoms improve<br>
+                      <strong>Key indications:</strong> Sudden onset after cold/fright, high fever with dry burning skin, intense fear and restlessness, thirst for cold water
+                    </div>
+                  </div>
+                </div>
+                <p style="margin-top:10px;font-size:11px;color:var(--muted);">This is educational only. Please consult a licensed homeopathic physician before taking any remedy.</p>
+              </div>
+            </div>
+          </div>
+          <div class="msg-row user">
+            <div class="chat-ai-avatar msg-avatar user-av">You</div>
+            <div class="msg-bubble user">Which one should I try first?</div>
+          </div>
+          <div class="msg-row">
+            <div class="chat-ai-avatar msg-avatar">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-4H7l5-8.5v4h3l-5 8.5z"/></svg>
+            </div>
+            <div class="msg-bubble ai">
+              Start with <strong>Arsenicum Album</strong> if restlessness and anxiety are the dominant features, especially with burning pains that feel better with warmth. Choose <strong>Aconitum</strong> if the onset was very sudden after exposure to cold wind or a fright, with intense fear and high fever. Please confirm with a physician before proceeding.
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-area">
+          <input type="text" placeholder="Ask a follow-up question..." id="chatInput" onkeydown="if(event.key==='Enter')sendMsg()"/>
+          <button class="send-btn" onclick="sendMsg()">
+            <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+          </button>
+        </div>
+      </div>
+      <div style="margin-top:14px">
+        <button class="btn btn-outline btn-sm" onclick="resetDiag()">
+          <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+          New Diagnosis
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MEDICINES PAGE ===== -->
+<div id="medicines" class="page">
+  <div class="container">
+    <div class="section-title">Medicines — Materia Medica</div>
+    <div class="section-sub">Search 200+ homeopathic remedies from classical texts</div>
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0016 9.5 6.5 6.5 0 109.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      <input class="med-search-bar" type="text" placeholder="Search remedy name or symptom..." oninput="filterMeds(this.value)"/>
+    </div>
+    <div class="chip-row" id="chipRow">
+      <div class="chip active" onclick="filterByChip(this,'All')">All</div>
+      <div class="chip" onclick="filterByChip(this,'Cold')">Common Cold</div>
+      <div class="chip" onclick="filterByChip(this,'Fever')">Fever</div>
+      <div class="chip" onclick="filterByChip(this,'Digestion')">Digestion</div>
+      <div class="chip" onclick="filterByChip(this,'Skin')">Skin</div>
+      <div class="chip" onclick="filterByChip(this,'Mental')">Mental</div>
+      <div class="chip" onclick="filterByChip(this,'Pain')">Pain</div>
+      <div class="chip" onclick="filterByChip(this,'Women')">Women's Health</div>
+    </div>
+    <div class="med-grid" id="medGrid"></div>
+  </div>
+</div>
+
+<!-- REMEDY DETAIL MODAL -->
+<div class="modal-overlay" id="remedyModal" style="display:none" onclick="closeModal(event)">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modalTitle"></div>
+        <div class="modal-subtitle" id="modalSub"></div>
+      </div>
+      <button class="close-btn" onclick="document.getElementById('remedyModal').style.display='none'">×</button>
+    </div>
+    <div class="tag-row" id="modalTags"></div>
+    <div class="detail-grid" id="modalContent"></div>
+    <div class="source-line" id="modalSource"></div>
+  </div>
+</div>
+
+<!-- ===== DOCTOR PAGE ===== -->
+<div id="doctor" class="page">
+  <div class="container">
+    <div class="section-title">Doctor Corner</div>
+    <div class="section-sub">Consult verified BHMS & MD homeopathic practitioners</div>
+    <div class="disclaimer blue-border" style="margin-bottom:24px">
+      <strong>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        Doctor Disclaimer
+      </strong>
+      <div class="disclaimer-body">
+        The doctors listed on Homeo AI are independent practitioners. Responses are for informational purposes only and do NOT constitute a formal medical consultation or prescription. Always consult a licensed homeopathic physician in person for diagnosis and treatment. Homeo AI is not responsible for any advice given by registered doctors on this platform.
+      </div>
+    </div>
+    <div class="doc-layout">
+      <div class="doc-sidebar">
+        <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:8px;letter-spacing:0.5px;text-transform:uppercase">Verified Doctors</div>
+        <div class="doctor-profile-card active-doc">
+          <div class="doc-avatar">RS</div>
+          <span class="verified-badge">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+            Verified
+          </span>
+          <div class="doc-name">Dr. Ramesh Sharma</div>
+          <div class="doc-spec">BHMS, MD (Hom)<br>Classical Homeopathy · 18 yrs</div>
+          <div class="doc-reg">Reg: MCI-48392 · Mumbai</div>
+        </div>
+        <div class="doctor-profile-card">
+          <div class="doc-avatar" style="background:var(--teal)">KM</div>
+          <span class="verified-badge">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+            Verified
+          </span>
+          <div class="doc-name">Dr. Kavita Mehta</div>
+          <div class="doc-spec">BHMS, PG Diploma<br>Paediatric Homeopathy · 11 yrs</div>
+          <div class="doc-reg">Reg: MCI-61207 · Delhi</div>
+        </div>
+        <div class="doctor-profile-card">
+          <div class="doc-avatar" style="background:#7C3AED">AP</div>
+          <span class="verified-badge">
+            <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+            Verified
+          </span>
+          <div class="doc-name">Dr. Anita Pillai</div>
+          <div class="doc-spec">BHMS<br>Women's Health · 9 yrs</div>
+          <div class="doc-reg">Reg: MCI-73811 · Bangalore</div>
+        </div>
+        <div class="card card-sm" style="background:var(--blue-light);border-color:var(--blue)">
+          <div style="font-size:12px;font-weight:600;color:var(--blue);margin-bottom:6px">Are you a doctor?</div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5">Register as a verified homeopathic practitioner to answer patient queries.</div>
+          <button class="btn btn-blue btn-sm" style="width:100%;justify-content:center">Register as Doctor</button>
+        </div>
+      </div>
+      <div class="doc-main">
+        <div class="ask-box">
+          <h3>
+            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+            Ask a Doctor
+          </h3>
+          <textarea placeholder="Describe your health concern and any remedies you've tried. Verified doctors will reply within 24–48 hours..." id="askInput"></textarea>
+          <div class="ask-box-footer">
+            <span class="ask-note">Available for Basic & Pro subscribers only</span>
+            <button class="btn btn-blue btn-sm" onclick="submitQuestion()">Submit Question</button>
+          </div>
+        </div>
+        <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:10px">Recent Doctor Replies</div>
+        <div class="query-card">
+          <div class="query-patient">Asked by <span>Priya S.</span> · 2 days ago</div>
+          <div class="query-q">My child (7 yrs) has recurring tonsillitis every 2–3 months. Which constitutional remedy could help long term?</div>
+          <div class="query-ans">
+            <div class="query-ans-doctor">Dr. Ramesh Sharma, BHMS, MD</div>
+            <p>Baryta Carb or Calcarea Carb may be indicated based on the child's constitution — timid, chilly, slow development. Detailed case-taking is essential. I'd suggest an in-person consultation to assess the miasm and select the appropriate constitutional remedy. Please do not self-medicate for a child.</p>
+          </div>
+        </div>
+        <div class="query-card">
+          <div class="query-patient">Asked by <span>Meera T.</span> · 4 days ago</div>
+          <div class="query-q">Can Pulsatilla 30C help with irregular periods, mood swings before menstruation, and tearfulness?</div>
+          <div class="query-ans">
+            <div class="query-ans-doctor">Dr. Kavita Mehta, BHMS, PG Dip</div>
+            <p>Pulsatilla is classically indicated for mild, yielding, emotional females with changeable symptoms, better in open air. Sepia may also be considered if there is indifference and bearing-down sensation. These remedies match different constitutions — please consult before starting. Potency selection matters greatly.</p>
+          </div>
+        </div>
+        <div class="query-card">
+          <div class="query-patient">Asked by <span>Rahul M.</span> · 6 days ago</div>
+          <div class="query-q">Which remedies help with chronic lower back pain, worse in the morning and better after moving around?</div>
+          <div class="query-ans">
+            <div class="query-ans-doctor">Dr. Ramesh Sharma, BHMS, MD</div>
+            <p>Rhus Tox is the classic remedy for back pain that is worse after rest and better from continued motion — your description fits well. Bryonia is the opposite (worse motion, better rest). Calc Fluor may help if there is disc-related stiffness. A full case is needed to confirm. Try Rhus Tox 30C for a week and report back.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PLANS PAGE ===== -->
+<div id="plans" class="page">
+  <div class="container">
+    <div class="section-title">Subscription Plans</div>
+    <div class="section-sub">Choose the plan that suits your wellness journey</div>
+    <div class="current-plan-card">
+      <div>
+        <div class="cp-label">Your current plan</div>
+        <div class="cp-plan">Free Plan</div>
+        <div class="cp-tagline">5 free messages per session · No signup required</div>
+        <div class="progress-wrap">
+          <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+          <span class="progress-label">1 of 5 messages used</span>
+        </div>
+      </div>
+      <div class="upgrade-nudge">
+        <div class="nudge-text">Upgrade for unlimited AI<br>diagnosis & doctor access</div>
+        <button class="btn btn-primary btn-sm">Upgrade Now</button>
+      </div>
+    </div>
+
+    <div class="plans-grid">
+      <div class="plan-card">
+        <div class="plan-tier">Free</div>
+        <div class="plan-price-big"><sup>₹</sup>0</div>
+        <div class="plan-period">forever free</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li><div class="feat-check"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>5 AI messages per session</li>
+          <li><div class="feat-check"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>Basic remedy lookup</li>
+          <li><div class="feat-check"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>3 remedy details per day</li>
+          <li><div class="feat-lock"><svg viewBox="0 0 24 24"><path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM8.9 6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H8.9V6z"/></svg></div>Save conversations</li>
+          <li><div class="feat-lock"><svg viewBox="0 0 24 24"><path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM8.9 6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H8.9V6z"/></svg></div>Doctor corner access</li>
+        </ul>
+        <div class="plan-cta">
+          <button class="btn btn-outline btn-full" style="font-size:13px">Current Plan</button>
+        </div>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-tier">Basic</div>
+        <div class="plan-price-big"><sup>₹</sup>250</div>
+        <div class="plan-period">per month</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li><div class="feat-check"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>50 AI messages per month</li>
+          <li><div class="feat-check"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>Save & revisit conversations</li>
+          <li><div class="feat-check"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>Full medicine database</li>
+          <li><div class="feat-check"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>PDF & image extraction</li>
+          <li><div class="feat-check"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>Ask a doctor feature</li>
+          <li><div class="feat-check"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>In-app customer support</li>
+          <li><div class="feat-lock"><svg viewBox="0 0 24 24"><path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM8.9 6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H8.9V6z"/></svg></div>Constitutional analysis (Pro only)</li>
+        </ul>
+        <div class="plan-cta">
+          <button class="btn btn-blue btn-full" style="font-size:13px" onclick="openPayment('Basic','250')">Subscribe ₹250/month</button>
+        </div>
+      </div>
+
+      <div class="plan-card featured">
+        <div class="popular-badge">Most Popular</div>
+        <div class="plan-tier" style="color:var(--blue)">Pro</div>
+        <div class="plan-price-big"><sup>₹</sup>450</div>
+        <div class="plan-period">per month</div>
+        <div class="plan-divider"></div>
+        <ul class="plan-features">
+          <li><div class="feat-check"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>Unlimited AI messages</li>
+          <li><div class="feat-check"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>Priority AI responses</li>
+          <li><div class="feat-check"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>Full Materia Medica database</li>
+          <li><div class="feat-check"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>Save unlimited conversations</li>
+          <li><div class="feat-check"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>Doctor corner access</li>
+          <li><div class="feat-check"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>Detailed constitutional analysis</li>
+          <li><div class="feat-check"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>PDF & image extraction</li>
+          <li><div class="feat-check"><svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg></div>Early access to new features</li>
+        </ul>
+        <div class="plan-cta">
+          <button class="btn btn-primary btn-full" style="font-size:13px" onclick="openPayment('Pro','450')">Subscribe ₹450/month</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="restore-section">
+      <button class="restore-btn">Restore Purchases</button>
+      <div class="policy-links"><a href="#">Terms of Service</a> &nbsp;·&nbsp; <a href="#">Privacy Policy</a> &nbsp;·&nbsp; <a href="#">Refund Policy</a></div>
+    </div>
+
+    <div class="disclaimer" style="margin-top:8px">
+      <strong>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+        Medical Disclaimer
+      </strong>
+      Homeo AI is an educational tool based on classical homeopathic Materia Medica. Not a substitute for professional medical advice, diagnosis, or treatment. Homeo AI and its developers are not liable for any health decisions made based on this application's output.
+    </div>
+  </div>
+</div>
+
+<!-- PAYWALL MODAL -->
+<div class="paywall-overlay" id="paywallOverlay" style="display:none">
+  <div class="paywall-box">
+    <div class="paywall-icon">
+      <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+    </div>
+    <h2>Free limit reached</h2>
+    <p>You've used all 5 free messages this session. Upgrade to continue your AI diagnosis and unlock the full Materia Medica database.</p>
+    <div class="paywall-plans">
+      <div class="pw-plan selected">
+        <div class="pw-plan-name">Basic</div>
+        <div class="pw-plan-price">₹250<span>/mo</span></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:4px">50 msgs/month</div>
+      </div>
+      <div class="pw-plan">
+        <div class="pw-plan-name">Pro</div>
+        <div class="pw-plan-price">₹450<span>/mo</span></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:4px">Unlimited msgs</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:10px">Subscribe Now</button>
+    <button class="btn btn-outline" style="width:100%;justify-content:center;font-size:13px" onclick="document.getElementById('paywallOverlay').style.display='none'">Maybe Later</button>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="pay-overlay" id="payOverlay" style="display:none" onclick="closePayOverlay(event)">
+  <div class="pay-box" id="payBox">
+
+    <!-- PAYMENT FORM -->
+    <div id="payForm">
+      <div class="pay-header">
+        <div>
+          <h2>Complete Payment</h2>
+          <p id="payHeaderSub">Homeo AI Subscription</p>
+        </div>
+        <button class="pay-close" onclick="document.getElementById('payOverlay').style.display='none'">×</button>
+      </div>
+
+      <div class="pay-plan-summary">
+        <div class="pay-plan-info">
+          <div class="pay-plan-name" id="payPlanName">Pro Plan</div>
+          <div class="pay-plan-desc">Billed monthly · Cancel anytime · Secure payment</div>
+        </div>
+        <div class="pay-plan-price" id="payPlanPrice">₹450<span style="font-size:13px;font-family:'DM Sans',sans-serif;color:var(--muted)">/mo</span></div>
+      </div>
+
+      <div class="pay-body">
+        <!-- Payment method tabs -->
+        <div class="pay-section">
+          <div class="pay-section-title">Choose Payment Method</div>
+          <div class="pay-methods">
+            <div class="pay-method active" onclick="selPayMethod(this,'card')" id="pm-card">
+              <div class="pay-method-icon">
+                <svg viewBox="0 0 38 24" xmlns="http://www.w3.org/2000/svg"><rect width="38" height="24" rx="4" fill="#1A1F71"/><path d="M14.5 8h9l-1.5 8h-9z" fill="#fff" opacity=".3"/><text x="5" y="16" font-size="8" font-weight="700" fill="white" font-family="sans-serif">VISA</text></svg>
+              </div>
+              <div class="pay-method-label">Card</div>
+            </div>
+            <div class="pay-method" onclick="selPayMethod(this,'upi')" id="pm-upi">
+              <div class="pay-method-icon">
+                <svg viewBox="0 0 48 24"><rect width="48" height="24" rx="4" fill="#6739B7"/><text x="50%" y="16" text-anchor="middle" font-size="9" font-weight="800" fill="white" font-family="sans-serif">UPI</text></svg>
+              </div>
+              <div class="pay-method-label">UPI</div>
+            </div>
+            <div class="pay-method" onclick="selPayMethod(this,'netbank')" id="pm-netbank">
+              <div class="pay-method-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#1B4F8A"><path d="M11.5 2L2 7v2h20V7L11.5 2zM4 11v6H2v2h20v-2h-2v-6h-2v6h-3v-6h-2v6H9v-6H7v6H5v-6H4z"/></svg>
+              </div>
+              <div class="pay-method-label">Net Banking</div>
+            </div>
+            <div class="pay-method" onclick="selPayMethod(this,'wallet')" id="pm-wallet">
+              <div class="pay-method-icon">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="#1B4F8A"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+              </div>
+              <div class="pay-method-label">Wallet</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD PANEL -->
+        <div id="panel-card">
+          <div class="pay-section">
+            <div class="pay-section-title">Card Details</div>
+            <div class="pay-field">
+              <label>Name on Card</label>
+              <input type="text" placeholder="As printed on card" id="cardName"/>
+            </div>
+            <div class="pay-field">
+              <label>Card Number</label>
+              <div class="card-number-wrap">
+                <input type="text" placeholder="0000  0000  0000  0000" id="cardNum" maxlength="19" oninput="formatCard(this)"/>
+                <div class="card-type-logos">
+                  <div class="card-logo visa">VISA</div>
+                  <div class="card-logo mc">MC</div>
+                </div>
+              </div>
+            </div>
+            <div class="pay-row">
+              <div class="pay-field">
+                <label>Expiry Date</label>
+                <input type="text" placeholder="MM / YY" id="cardExp" maxlength="7" oninput="formatExpiry(this)"/>
+              </div>
+              <div class="pay-field">
+                <label>CVV</label>
+                <input type="password" placeholder="• • •" maxlength="4" id="cardCvv"/>
+              </div>
+            </div>
+          </div>
+          <div class="pay-section">
+            <div class="pay-section-title">Billing Details</div>
+            <div class="pay-row">
+              <div class="pay-field"><label>Full Name</label><input type="text" placeholder="Your full name" id="billName"/></div>
+              <div class="pay-field"><label>Email</label><input type="email" placeholder="you@email.com" id="billEmail"/></div>
+            </div>
+            <div class="pay-row">
+              <div class="pay-field"><label>Phone</label><input type="tel" placeholder="+91 XXXXX XXXXX" id="billPhone"/></div>
+              <div class="pay-field">
+                <label>State</label>
+                <select id="billState">
+                  <option value="">Select state</option>
+                  <option>Andhra Pradesh</option><option>Assam</option><option>Bihar</option><option>Delhi</option><option>Gujarat</option><option>Haryana</option><option>Himachal Pradesh</option><option>Jharkhand</option><option>Karnataka</option><option>Kerala</option><option>Madhya Pradesh</option><option>Maharashtra</option><option>Odisha</option><option>Punjab</option><option>Rajasthan</option><option>Tamil Nadu</option><option>Telangana</option><option>Uttar Pradesh</option><option>Uttarakhand</option><option>West Bengal</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- UPI PANEL -->
+        <div id="panel-upi" class="pay-tab-hidden">
+          <div class="pay-section">
+            <div class="pay-section-title">Enter UPI ID</div>
+            <div class="pay-field">
+              <label>UPI ID / VPA</label>
+              <div class="upi-row">
+                <input type="text" placeholder="yourname@paytm / @gpay / @upi" id="upiId"/>
+                <button class="upi-verify-btn" onclick="verifyUPI()">Verify</button>
+              </div>
+            </div>
+            <div style="margin-top:12px">
+              <div class="pay-section-title">Or pay with</div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap">
+                <div class="bank-btn" style="padding:8px 14px;font-size:12px" onclick="selUPIApp(this)">
+                  <span style="font-size:13px;font-weight:700;color:#00B9F1">G</span>Pay
+                </div>
+                <div class="bank-btn" style="padding:8px 14px;font-size:12px" onclick="selUPIApp(this)">
+                  <span style="font-size:13px;font-weight:700;color:#002970">PhonePe</span>
+                </div>
+                <div class="bank-btn" style="padding:8px 14px;font-size:12px" onclick="selUPIApp(this)">
+                  <span style="font-size:13px;font-weight:700;color:#00BAF2">Paytm</span>
+                </div>
+                <div class="bank-btn" style="padding:8px 14px;font-size:12px" onclick="selUPIApp(this)">BHIM</div>
+              </div>
+            </div>
+            <div class="pay-row" style="margin-top:12px">
+              <div class="pay-field"><label>Name</label><input type="text" placeholder="Your name" id="upiName"/></div>
+              <div class="pay-field"><label>Email</label><input type="email" placeholder="you@email.com" id="upiEmail"/></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NET BANKING PANEL -->
+        <div id="panel-netbank" class="pay-tab-hidden">
+          <div class="pay-section">
+            <div class="pay-section-title">Select Your Bank</div>
+            <div class="netbank-grid">
+              <div class="bank-btn" onclick="selBank(this)">SBI<span>State Bank</span></div>
+              <div class="bank-btn" onclick="selBank(this)">HDFC<span>HDFC Bank</span></div>
+              <div class="bank-btn" onclick="selBank(this)">ICICI<span>ICICI Bank</span></div>
+              <div class="bank-btn" onclick="selBank(this)">Axis<span>Axis Bank</span></div>
+              <div class="bank-btn" onclick="selBank(this)">Kotak<span>Kotak Bank</span></div>
+              <div class="bank-btn" onclick="selBank(this)">PNB<span>Punjab National</span></div>
+            </div>
+            <div class="pay-field" style="margin-top:4px">
+              <label>Other Bank</label>
+              <select><option>Select bank...</option><option>Bank of Baroda</option><option>Canara Bank</option><option>Union Bank</option><option>Indian Bank</option><option>Yes Bank</option><option>IndusInd Bank</option><option>Federal Bank</option></select>
+            </div>
+            <div class="pay-row" style="margin-top:8px">
+              <div class="pay-field"><label>Name</label><input type="text" placeholder="Account holder name" id="nbName"/></div>
+              <div class="pay-field"><label>Email</label><input type="email" placeholder="you@email.com" id="nbEmail"/></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- WALLET PANEL -->
+        <div id="panel-wallet" class="pay-tab-hidden">
+          <div class="pay-section">
+            <div class="pay-section-title">Select Wallet</div>
+            <div class="wallet-grid">
+              <div class="wallet-btn" onclick="selWallet(this)">Paytm</div>
+              <div class="wallet-btn" onclick="selWallet(this)">Mobikwik</div>
+              <div class="wallet-btn" onclick="selWallet(this)">Freecharge</div>
+              <div class="wallet-btn" onclick="selWallet(this)">Airtel</div>
+            </div>
+            <div class="pay-row" style="margin-top:12px">
+              <div class="pay-field"><label>Registered Mobile</label><input type="tel" placeholder="+91 XXXXX XXXXX" id="walletPhone"/></div>
+              <div class="pay-field"><label>Email</label><input type="email" placeholder="you@email.com" id="walletEmail"/></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pay-secure-row">
+          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+          <span>256-bit SSL encrypted · Powered by Razorpay · PCI-DSS compliant · Your data is safe</span>
+        </div>
+
+        <button class="pay-submit" id="paySubmitBtn" onclick="processPayment()">
+          Pay <span id="payBtnAmount">₹450</span> Securely
+        </button>
+      </div>
+
+      <div class="pay-footer">
+        <div class="pay-logos-label">Accepted payment methods</div>
+        <div class="pay-logos">
+          <div class="pay-logo-badge">VISA</div>
+          <div class="pay-logo-badge">Mastercard</div>
+          <div class="pay-logo-badge">RuPay</div>
+          <div class="pay-logo-badge">UPI</div>
+          <div class="pay-logo-badge">Razorpay</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS SCREEN -->
+    <div id="paySuccess" class="pay-tab-hidden">
+      <div class="pay-success">
+        <div class="pay-success-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" stroke="#16A34A" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+        </div>
+        <h2>Payment Successful!</h2>
+        <p id="paySuccessMsg">Your Homeo AI Pro subscription is now active. You have unlimited AI messages and full Materia Medica access.</p>
+        <div style="background:var(--bg);border-radius:10px;padding:14px;margin:16px 0;text-align:left">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px">Transaction Details</div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text);margin-bottom:4px"><span>Plan</span><span id="successPlan" style="font-weight:600">Pro — ₹450/month</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text);margin-bottom:4px"><span>Transaction ID</span><span style="font-family:monospace;color:var(--muted)" id="txnId">TXN-HOMEO-XXXX</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text)"><span>Next Billing</span><span id="nextBill" style="color:var(--muted)">—</span></div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center" onclick="document.getElementById('payOverlay').style.display='none';location.reload()">
+          Start Using Homeo AI
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const remedyData = [
+  {name:"Arsenicum Album",latin:"Arsenious Acid",desc:"Restlessness, burning pains better by heat, anxiety, digestive issues with exhaustion",tags:["constitutional","acute"],cats:["Fever","Digestion","Mental"],mental:["Intense anxiety about health","Restlessness and despair","Fear of death, being alone","Fastidiousness"],physical:["Burning pains better from heat","Thirst for small sips","Vomiting & diarrhoea together","Weakness disproportionate to illness"],modalities:{better:["Heat, warm applications","Company","Elevated head"],worse:["Cold, midnight–2am","Exertion","Cold food/drinks"]},potencies:["6C","30C","200C"],dosage:"3 pills, 3× daily. Reduce as symptoms improve.",related:["Phosphorus","Carbo Veg","Veratrum Album"],source:"Boericke, W.M. (2004). Pocket Manual of Homoeopathic Materia Medica. B. Jain Publishers."},
+  {name:"Belladonna",latin:"Atropa belladonna",desc:"Sudden high fever, throbbing headache, hot red skin, sensitivity to light and noise",tags:["acute","fever"],cats:["Fever","Pain"],mental:["Sudden violent delirium","Biting, striking","Fear of imaginary things"],physical:["High fever with hot red skin","Throbbing headache worse motion","Dilated pupils","Dryness of mucous membranes"],modalities:{better:["Rest, semi-erect position","Warm room"],worse:["Touch, jar, noise, light","Afternoon, lying down"]},potencies:["30C","200C"],dosage:"3 pills every 1–2 hours in acute high fever. Reduce frequency as fever settles.",related:["Aconitum","Gelsemium","Stramonium"],source:"Kent, J.T. (1905). Lectures on Homoeopathic Materia Medica. Boericke & Tafel."},
+  {name:"Nux Vomica",latin:"Strychnos nux-vomica",desc:"Digestive disorders, irritability, overindulgence, nausea, constipation, morning aggravation",tags:["constitutional","chronic"],cats:["Digestion","Mental"],mental:["Irritable, cannot bear contradiction","Type-A personality, overworked","Hypersensitive to noise, light, odours"],physical:["Nausea worse in morning","Ineffectual urge to stool","Heartburn after eating","Chilly, sensitive to cold air"],modalities:{better:["Rest, warmth","Evening, damp weather"],worse:["Morning, cold, open air","Mental exertion, spices, stimulants"]},potencies:["30C","200C","1M"],dosage:"30C once or twice daily. Best given at bedtime.",related:["Lycopodium","Sulphur","Ignatia"],source:"Clarke, J.H. (1900). A Dictionary of Practical Materia Medica. Homeopathic Publishing Co."},
+  {name:"Pulsatilla",latin:"Pulsatilla nigricans",desc:"Mild, yielding, weepy patient. Wandering pains, thick yellow discharge, better in open air",tags:["constitutional"],cats:["Women","Mental","Cold"],mental:["Mild, gentle, timid, tearful","Craves sympathy and company","Changeable moods quickly"],physical:["Thick, yellow-green bland discharges","Wandering pains — shift location","No thirst even with dry mouth","Hot, worse in warm rooms"],modalities:{better:["Open air, gentle motion","Cold applications, cold food"],worse:["Heat, warm rooms","Lying on left side, evening"]},potencies:["6C","30C","200C"],dosage:"30C twice daily. Especially suited to women and children.",related:["Natrum Mur","Sepia","Cyclamen"],source:"Boericke, W.M. (2004). Pocket Manual of Homoeopathic Materia Medica. B. Jain Publishers."},
+  {name:"Aconitum Napellus",latin:"Monkshood / Wolfsbane",desc:"Sudden onset from cold/fright, intense fear, high fever with dry hot skin",tags:["acute","fever"],cats:["Fever","Cold","Mental"],mental:["Sudden intense fear of death","Extreme anxiety and restlessness","Predicts the time of death"],physical:["Sudden high fever after cold dry wind","Dry, hot burning skin","Strong, bounding pulse","Unquenchable thirst for cold water"],modalities:{better:["Open air"],worse:["Evening and night, warm room","Fright, music, tobacco"]},potencies:["30C","200C"],dosage:"3 pills every 1–2 hours. Remedy works best in first 24 hours of illness.",related:["Belladonna","Coffea","Chamomilla"],source:"Kent, J.T. (1905). Lectures on Homoeopathic Materia Medica. Boericke & Tafel."},
+  {name:"Lycopodium",latin:"Club Moss",desc:"Digestive weakness, bloating, lack of confidence, right-sided complaints, liver issues",tags:["constitutional","chronic"],cats:["Digestion","Mental"],mental:["Deep-seated lack of self-confidence","Dictatorial to family, submissive to authority","Fear of being alone, yet averse to company","Intellectual, yet fears failure"],physical:["Bloating immediately after eating","Right-sided complaints","4–8pm aggravation","Fan-like movement of nostrils"],modalities:{better:["Warm food and drink","Motion, after midnight"],worse:["4–8pm, oysters","Pressure of clothes around waist"]},potencies:["30C","200C","1M"],dosage:"Once weekly at 200C or 1M. Daily 30C for acute digestive issues.",related:["Sulphur","Nux Vomica","Calcarea Carb"],source:"Allen, H.C. (1899). Keynotes & Characteristics with Comparisons. B. Jain Publishers."},
+  {name:"Rhus Toxicodendron",latin:"Poison Oak",desc:"Joint and muscle pains better from motion, worse on first movement, restlessness",tags:["acute","chronic"],cats:["Pain","Skin"],mental:["Restlessness, must keep moving","Weeping without knowing why","Anxiety at night, apprehension"],physical:["Pains worse on initial motion, better continued motion","Stiffness worse in morning and cold damp","Skin: intense itching with blisters","Dry, triangular red-tipped tongue"],modalities:{better:["Continued motion, warmth","Hot bath, rubbing, stretching"],worse:["Rest, cold wet weather","First motion after rest, night"]},potencies:["6C","30C","200C"],dosage:"30C three times daily for acute joint pain. Reduce as pain improves.",related:["Bryonia","Ruta Grav","Calc Carb"],source:"Clarke, J.H. (1900). A Dictionary of Practical Materia Medica. Homeopathic Publishing Co."},
+  {name:"Sulphur",latin:"Purified Sulphur",desc:"Skin conditions, burning sensations, philosophical temperament, untidy patient",tags:["constitutional","chronic"],cats:["Skin","Mental"],mental:["Philosophical, theorises constantly","Untidy, ragged philosopher type","Selfish, argues for pleasure","Averse to bathing"],physical:["Skin: dry, scaly, worse from washing","Burning sensations everywhere","Red orifices (lips, anus, eyelids)","Hunger at 11am, weak and faint"],modalities:{better:["Dry warm weather, lying right side"],worse:["Washing, bathing, at rest","11am, standing, heat of bed"]},potencies:["30C","200C","1M"],dosage:"Single dose 200C or 1M weekly. Avoid repeated dosing in sensitive patients.",related:["Calcarea Carb","Lycopodium","Psorinum"],source:"Boericke, W.M. (2004). Pocket Manual of Homoeopathic Materia Medica. B. Jain Publishers."},
+  {name:"Calcarea Carbonica",latin:"Calcium Carbonate from Oyster Shell",desc:"Chilly, sluggish, fearful patient. Bone and gland affections, profuse perspiration",tags:["constitutional"],cats:["Mental","Women"],mental:["Fear of insanity, of being observed","Slow but stubborn","Obstinate in children, head-strong","Anxiety about health, future"],physical:["Cold, clammy hands and feet","Sour sweat, sour vomiting","Craving for eggs, sweets, chalk","Glandular enlargements"],modalities:{better:["Dry weather, lying on painful side"],worse:["Cold, wet, exertion","Mental or physical exertion, full moon"]},potencies:["30C","200C","1M"],dosage:"Single dose 200C or 1M monthly. Constitutional remedy — do not repeat frequently.",related:["Sulphur","Lycopodium","Baryta Carb"],source:"Kent, J.T. (1905). Lectures on Homoeopathic Materia Medica. Boericke & Tafel."},
+  {name:"Gelsemium",latin:"Yellow Jasmine",desc:"Anticipatory anxiety, weakness, trembling, flu with heaviness, drooping eyelids",tags:["acute","constitutional"],cats:["Fever","Mental"],mental:["Anticipatory anxiety — exams, performance","Dull, drowsy, dizzy, dumb","Wants to be left alone quietly","Fear with trembling"],physical:["Heavy, drooping eyelids","Muscular weakness and trembling","Headache with visual disturbances","Flu with absence of thirst"],modalities:{better:["Continued motion, open air","Perspiration, urination"],worse:["Damp, before a storm","Emotion, excitement, bad news"]},potencies:["30C","200C"],dosage:"30C three times daily for acute flu. 200C once for anticipatory anxiety.",related:["Baptisia","Belladonna","Aconitum"],source:"Allen, H.C. (1899). Keynotes & Characteristics with Comparisons. B. Jain Publishers."}
+];
+
+let msgCount = 1;
+const MAX_FREE = 5;
+let currentPayPlan = 'Pro';
+let currentPayAmount = '450';
+let currentPayMethod = 'card';
+
+function showPage(id, tabEl) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (tabEl) tabEl.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function selPS(el, group) {
+  el.closest('.pill-select').querySelectorAll('.ps-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function selUnit(el) {
+  el.closest('.unit-toggle').querySelectorAll('span').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function toggleDisclaimer() {
+  document.getElementById('diagDisclaimer').classList.toggle('collapsed');
+}
+
+function startChat() {
+  document.getElementById('patientForm').style.display = 'none';
+  document.getElementById('chatSection').style.display = 'block';
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step1').classList.add('done');
+  document.getElementById('step1').textContent = '✓';
+  document.getElementById('step2').classList.add('active');
+}
+
+function resetDiag() {
+  document.getElementById('patientForm').style.display = 'block';
+  document.getElementById('chatSection').style.display = 'none';
+  document.getElementById('step1').classList.add('active');
+  document.getElementById('step1').classList.remove('done');
+  document.getElementById('step1').textContent = '1';
+  document.getElementById('step2').classList.remove('active');
+  msgCount = 1;
+  updateMsgBadge();
+}
+
+function sendMsg() {
+  const input = document.getElementById('chatInput');
+  const txt = input.value.trim();
+  if (!txt) return;
+  if (msgCount >= MAX_FREE) {
+    document.getElementById('paywallOverlay').style.display = 'flex';
+    return;
+  }
+  const msgs = document.getElementById('chatMsgs');
+  const userDiv = document.createElement('div');
+  userDiv.className = 'msg-row user';
+  userDiv.innerHTML = '<div class="chat-ai-avatar msg-avatar user-av">You</div><div class="msg-bubble user">' + txt + '</div>';
+  msgs.appendChild(userDiv);
+  input.value = '';
+  msgCount++;
+  updateMsgBadge();
+  setTimeout(() => {
+    const aiDiv = document.createElement('div');
+    aiDiv.className = 'msg-row';
+    aiDiv.innerHTML = '<div class="chat-ai-avatar msg-avatar"><svg viewBox="0 0 24 24" width="14" height="14" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-4H7l5-8.5v4h3l-5 8.5z"/></svg></div><div class="msg-bubble ai">Thank you for the follow-up. Based on classical Materia Medica, Arsenicum Album 30C is the most appropriate starting point. Observe for 48 hours. If there is no improvement, consult a licensed homeopathic physician for a full constitutional assessment. This is educational guidance only.</div>';
+    msgs.appendChild(aiDiv);
+    msgs.scrollTop = msgs.scrollHeight;
+    if (msgCount >= MAX_FREE) setTimeout(() => { document.getElementById('paywallOverlay').style.display = 'flex'; }, 1000);
+  }, 800);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function updateMsgBadge() {
+  const rem = MAX_FREE - msgCount;
+  document.getElementById('msgLimitBadge').textContent = rem + ' message' + (rem !== 1 ? 's' : '') + ' remaining (Free)';
+}
+
+function renderMeds(data) {
+  const grid = document.getElementById('medGrid');
+  grid.innerHTML = '';
+  data.forEach((r, i) => {
+    const tagHTML = r.tags.map(t => `<span class="tag ${t}">${t.charAt(0).toUpperCase()+t.slice(1)}</span>`).join('');
+    const card = document.createElement('div');
+    card.className = 'med-card';
+    card.innerHTML = `<div class="med-name">${r.name}</div><div class="med-latin">${r.latin}</div><div class="med-desc">${r.desc}</div><div class="tag-row">${tagHTML}</div><button class="view-detail-btn" onclick="openModal(${i})">View Full Details</button>`;
+    grid.appendChild(card);
+  });
+}
+
+function filterMeds(val) {
+  const filtered = remedyData.filter(r => r.name.toLowerCase().includes(val.toLowerCase()) || r.desc.toLowerCase().includes(val.toLowerCase()) || r.mental.join(' ').toLowerCase().includes(val.toLowerCase()) || r.physical.join(' ').toLowerCase().includes(val.toLowerCase()));
+  renderMeds(filtered);
+}
+
+function filterByChip(el, cat) {
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  if (cat === 'All') { renderMeds(remedyData); return; }
+  renderMeds(remedyData.filter(r => r.cats.some(c => c.includes(cat))));
+}
+
+function openModal(i) {
+  const r = remedyData[i];
+  document.getElementById('modalTitle').textContent = r.name;
+  document.getElementById('modalSub').textContent = r.latin;
+  document.getElementById('modalTags').innerHTML = r.tags.map(t => `<span class="tag ${t}">${t.charAt(0).toUpperCase()+t.slice(1)}</span>`).join('');
+  document.getElementById('modalContent').innerHTML = `
+    <div class="detail-section"><h4>Key Mental Symptoms</h4><ul>${r.mental.map(m=>`<li>${m}</li>`).join('')}</ul></div>
+    <div class="detail-section"><h4>Key Physical Symptoms</h4><ul>${r.physical.map(p=>`<li>${p}</li>`).join('')}</ul></div>
+    <div class="detail-section"><h4>Better From</h4><ul>${r.modalities.better.map(b=>`<li>${b}</li>`).join('')}</ul></div>
+    <div class="detail-section"><h4>Worse From</h4><ul>${r.modalities.worse.map(w=>`<li>${w}</li>`).join('')}</ul></div>
+    <div class="detail-section"><h4>Common Potencies</h4><div class="potency-chips">${r.potencies.map(p=>`<span class="potency-chip">${p}</span>`).join('')}</div></div>
+    <div class="detail-section"><h4>Typical Dosage</h4><p>${r.dosage}</p></div>
+    <div class="detail-section full"><h4>Related Remedies</h4><div class="potency-chips">${r.related.map(rel=>`<span class="potency-chip" style="background:var(--teal-light);color:var(--teal)">${rel}</span>`).join('')}</div></div>
+  `;
+  document.getElementById('modalSource').innerHTML = `<strong>Source:</strong> ${r.source}`;
+  document.getElementById('remedyModal').style.display = 'flex';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('remedyModal')) {
+    document.getElementById('remedyModal').style.display = 'none';
+  }
+}
+
+function submitQuestion() {
+  const txt = document.getElementById('askInput').value.trim();
+  if (!txt) return;
+  alert('Your question has been submitted! A verified doctor will reply within 24–48 hours. (Basic/Pro feature)');
+  document.getElementById('askInput').value = '';
+}
+
+document.querySelectorAll('.pw-plan').forEach(p => {
+  p.addEventListener('click', () => {
+    document.querySelectorAll('.pw-plan').forEach(x => x.classList.remove('selected'));
+    p.classList.add('selected');
+  });
+});
+
+/* ===== PAYMENT FUNCTIONS ===== */
+function openPayment(plan, amount) {
+  currentPayPlan = plan;
+  currentPayAmount = amount;
+  document.getElementById('payPlanName').textContent = plan + ' Plan';
+  document.getElementById('payPlanPrice').innerHTML = '₹' + amount + '<span style="font-size:13px;font-family:\'DM Sans\',sans-serif;color:var(--muted)">/mo</span>';
+  document.getElementById('payHeaderSub').textContent = 'Homeo AI ' + plan + ' Subscription';
+  document.getElementById('payBtnAmount').textContent = '₹' + amount;
+  document.getElementById('payForm').style.display = 'block';
+  document.getElementById('paySuccess').classList.add('pay-tab-hidden');
+  selPayMethod(document.getElementById('pm-card'), 'card');
+  document.getElementById('payOverlay').style.display = 'flex';
+}
+
+function closePayOverlay(e) {
+  if (e.target === document.getElementById('payOverlay')) {
+    document.getElementById('payOverlay').style.display = 'none';
+  }
+}
+
+function selPayMethod(el, method) {
+  document.querySelectorAll('.pay-method').forEach(m => m.classList.remove('active'));
+  el.classList.add('active');
+  currentPayMethod = method;
+  ['card','upi','netbank','wallet'].forEach(p => {
+    const panel = document.getElementById('panel-' + p);
+    if (panel) panel.classList.toggle('pay-tab-hidden', p !== method);
+  });
+}
+
+function formatCard(input) {
+  let val = input.value.replace(/\D/g,'').substring(0,16);
+  input.value = val.replace(/(.{4})/g,'$1  ').trim();
+}
+
+function formatExpiry(input) {
+  let val = input.value.replace(/\D/g,'');
+  if (val.length >= 2) val = val.substring(0,2) + ' / ' + val.substring(2,4);
+  input.value = val;
+}
+
+function verifyUPI() {
+  const id = document.getElementById('upiId').value.trim();
+  if (!id) { alert('Please enter a UPI ID'); return; }
+  alert('UPI ID verified: ' + id + '\nAccount: HOMEO AI User');
+}
+
+function selBank(el) {
+  document.querySelectorAll('.netbank-grid .bank-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function selWallet(el) {
+  document.querySelectorAll('.wallet-grid .wallet-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function selUPIApp(el) {
+  el.closest('div').querySelectorAll('.bank-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function processPayment() {
+  const btn = document.getElementById('paySubmitBtn');
+  btn.textContent = 'Processing...';
+  btn.style.opacity = '0.7';
+  btn.style.cursor = 'not-allowed';
+  setTimeout(() => {
+    const txn = 'TXN-HOMEO-' + Math.random().toString(36).substr(2,8).toUpperCase();
+    const next = new Date();
+    next.setMonth(next.getMonth() + 1);
+    const nextStr = next.toLocaleDateString('en-IN', {day:'numeric',month:'long',year:'numeric'});
+    document.getElementById('txnId').textContent = txn;
+    document.getElementById('nextBill').textContent = nextStr;
+    document.getElementById('successPlan').textContent = currentPayPlan + ' — ₹' + currentPayAmount + '/month';
+    document.getElementById('paySuccessMsg').textContent = 'Your Homeo AI ' + currentPayPlan + ' subscription is now active! Enjoy ' + (currentPayPlan === 'Pro' ? 'unlimited AI messages, full Materia Medica access, and Doctor Corner.' : '50 AI messages/month, full medicine database, and more.');
+    document.getElementById('payForm').style.display = 'none';
+    document.getElementById('paySuccess').classList.remove('pay-tab-hidden');
+    btn.textContent = 'Pay ₹' + currentPayAmount + ' Securely';
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+  }, 2000);
+}
+
+renderMeds(remedyData);
+</script>
+</body>
+</html>  
+
+  
